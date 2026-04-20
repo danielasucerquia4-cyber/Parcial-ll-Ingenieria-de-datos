@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Warehouse | Proyecto Ingeniería de Datos</title>
+    <meta name="description" content="Landing page detallada para el Proyecto de Ingeniería de Datos - Implementación de Data Warehouse con Modelo Estrella y Pipeline ETL.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #9d50bb;
+            --bg-dark: #0a0b1e;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --text-light: #f8f9fa;
+            --accent: #3a1c71;
+            --glass: rgba(255, 255, 255, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- Background Animation --- */
+        .bg-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1a1b3a 0%, #0a0b1e 100%);
+        }
+
+        .orb {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--primary), transparent 70%);
+            filter: blur(100px);
+            opacity: 0.15;
+            animation: move 15s infinite alternate;
+        }
+
+        .orb-2 {
+            bottom: -100px;
+            right: -100px;
+            background: radial-gradient(circle, var(--secondary), transparent 70%);
+            animation: move-rev 20s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(-10%, -10%); }
+            to { transform: translate(20%, 20%); }
+        }
+
+        @keyframes move-rev {
+            from { transform: translate(10%, 10%); }
+            to { transform: translate(-20%, -20%); }
+        }
+
+        /* --- Header --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 11, 30, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass);
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        /* --- Hero --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5%;
+        }
+
+        .hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            opacity: 0.7;
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 210, 255, 0.5);
+        }
+
+        .btn-secondary {
+            border: 1px solid var(--glass);
+            color: var(--text-light);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: var(--glass);
+        }
+
+        /* --- Sections --- */
+        section {
+            padding: 100px 10%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title span {
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+        }
+
+        /* --- Grid Layout --- */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .card i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .card p {
+            opacity: 0.7;
+            font-size: 0.95rem;
+        }
+
+        /* --- ETL Flow --- */
+        .etl-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .etl-step {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .etl-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--accent);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+        }
+
+        .etl-line {
+            position: absolute;
+            top: 40px;
+            left: 50px;
+            width: calc(100% - 100px);
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        /* --- Interactive Code Snippets --- */
+        .code-container {
+            background: #050510;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            font-family: 'Courier New', Courier, monospace;
+            border-left: 4px solid var(--secondary);
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        /* --- Dashboard Preview --- */
+        .dashboard-preview {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .preview-img {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 16px;
+            border: 1px solid var(--glass);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: var(--transition);
+            box-shadow: -20px 20px 60px rgba(0,0,0,0.5);
+            background: #1e1e2e; /* Fallback */
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .preview-img:hover {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 80px 10% 40px;
+            background: #050510;
+            border-top: 1px solid var(--glass);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+            gap: 3rem;
+        }
+
+        .footer-brand h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .footer-links p {
+            margin-bottom: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            nav { padding: 1.5rem 5%; }
+            .nav-links { display: none; }
+            section { padding: 60px 5%; }
+            .etl-line { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow">
+        <div class="orb"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <nav>
+        <div class="logo">DanielaData.lab</div>
+        <div class="nav-links">
+            <a href="#inicio">Inicio</a>
+            <a href="#arquitectura">Arquitectura</a>
+            <a href="#etl">Pipeline ETL</a>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#contacto">Contacto</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="inicio">
+            <h1>Data Warehouse <br> <span style="background: linear-gradient(to right, #00d2ff, #9d50bb); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Modelado Digital</span></h1>
+            <p>Transformación inteligente de datos crudos en activos estratégicos. Implementación avanzada de un Modelo Estrella para Business Intelligence masivo.</p>
+            <div class="cta-group">
+                <a href="#etl" class="btn btn-primary">Ver Proceso ETL</a>
+                <a href="#dashboard" class="btn btn-secondary">Explorar Dashboard</a>
+            </div>
+        </section>
+
+        <!-- Architecture Section -->
+        <section id="arquitectura">
+            <div class="section-title">
+                <span>Business Intelligence</span>
+                <h2>Modelo de Datos en Estrella</h2>
+            </div>
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Tabla de Hechos</h3>
+                    <p>Centraliza las métricas clave del negocio: Ventas por ID de cliente, producto y fecha. El corazón de nuestra infraestructura de datos.</p>
+                </div>
+                <div class="card">
+                    <h3>Dimensiones</h3>
+                    <p>Contexto granular para el análisis: Atributos detallados de Clientes (ID, Ciudad), Productos y Fechas para inteligencia temporal.</p>
+                </div>
+                <div class="card">
+                    <h3>Eficiencia SQL</h3>
+                    <p>Optimizado para consultas rápidas mediante uniones directas (JOIN), minimizando la redundancia y maximizando el rendimiento.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ETL Section -->
+        <section id="etl" style="background: rgba(255,255,255,0.02);">
+            <div class="section-title">
+                <span>Pipeline Automático</span>
+                <h2>Proceso ETL Integrado</h2>
+            </div>
+            
+            <div class="etl-flow">
+                <div class="etl-line"></div>
+                <div class="etl-step">
+                    <div class="etl-icon">E</div>
+                    <h4>EXTRACT</h4>
+                    <p>Extracción de fuentes CSV: Clientes, Productos y Ventas.</p>
+                </div>
+                <div class="etl-step">
+                    <div class="etl-icon">T</div>
+                    <h4>TRANSFORM</h4>
+                    <p>Limpieza de nulos, eliminación de duplicados y Enriquecimiento.</p>
+                </div>
+                <div class="etl-step">
+                    <div class="etl-icon">L</div>
+                    <h4>LOAD</h4>
+                    <p>Carga en el Data Warehouse consolidado para producción.</p>
+                </div>
+            </div>
+
+            <div class="code-container">
+                <code style="color: #6272a4;"># Proceso de Unión y Limpieza</code><br>
+                <code style="color: #ff79c6;">dw =</code> ventas.merge(clientes, on='id_cliente')<br>
+                <code style="color: #ff79c6;">dw =</code> dw.merge(productos, on='id_producto')<br>
+                <code style="color: #ff79c6;">dw =</code> dw.dropna().drop_duplicates()
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard">
+            <div class="section-title">
+                <span>Visualización Streamlit</span>
+                <h2>Dashboard Interactivo</h2>
+            </div>
+
+            <div class="dashboard-preview">
+                <div class="preview-img">
+                    <svg width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bar-chart-3" style="color: var(--primary); opacity: 0.5;">
+                        <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
+                    </svg>
+                </div>
+                <div style="flex: 1; min-width: 300px;">
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 1rem;">
+                            <span style="color: var(--primary); font-size: 1.2rem;">✔</span>
+                            <div>
+                                <h4 style="margin-bottom: 0.3rem;">Análisis de Tendencias</h4>
+                                <p style="opacity: 0.7; font-size: 0.9rem;">Visualización de ventas a través del tiempo con filtros inteligentes por categoría y región.</p>
+                            </div>
+                        </li>
+                        <li style="margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 1rem;">
+                            <span style="color: var(--primary); font-size: 1.2rem;">✔</span>
+                            <div>
+                                <h4 style="margin-bottom: 0.3rem;">Modelado Predictivo</h4>
+                                <p style="opacity: 0.7; font-size: 0.9rem;">Integración de algoritmos para estimar comportamientos futuros basados en el histórico del DW.</p>
+                            </div>
+                        </li>
+                        <li style="margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 1rem;">
+                            <span style="color: var(--primary); font-size: 1.2rem;">✔</span>
+                            <div>
+                                <h4 style="margin-bottom: 0.3rem;">Orquestación Visual</h4>
+                                <p style="opacity: 0.7; font-size: 0.9rem;">Representación del DAG de procesos para monitorear la salud del pipeline de datos.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contacto" style="text-align: center;">
+            <div class="card" style="max-width: 800px; margin: 0 auto; padding: 4rem;">
+                <h2>¿Listo para el siguiente nivel de Datos?</h2>
+                <p style="margin: 1.5rem 0 2.5rem; font-size: 1.1rem;">Contáctame para consultoría personalizada en arquitectura de datos y soluciones de IA.</p>
+                <a href="https://wa.me/573144814714" class="btn btn-primary">Hablar por WhatsApp</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand" style="flex: 2;">
+                <h4>DanielaData.lab</h4>
+                <p style="opacity: 0.6; max-width: 400px;">Especialistas en ingeniería de datos, modelos de nube inteligente y transformación digital estratégica.</p>
+            </div>
+            <div class="footer-links" style="flex: 1;">
+                <p><strong>Desarrollado por:</strong></p>
+                <p>Fiebert Alirio Guzmán Pérez</p>
+                <p>WhatsApp: 3144814714</p>
+            </div>
+            <div class="footer-links" style="flex: 1;">
+                <p><strong>Ubicación:</strong></p>
+                <p>Colombia, Sudamérica</p>
+                <p>Ingeniería de Datos II</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 DanielaData.lab - Marca Registrada. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll reveal animation
+        const sections = document.querySelectorAll('section');
+        const options = { threshold: 0.2 };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, options);
+
+        sections.forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 0.8s ease-out';
+            observer.observe(section);
+        });
+
+        // Interactive orbs following mouse subtly
+        document.addEventListener('mousemove', (e) => {
+            const orb = document.querySelector('.orb');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            orb.style.transform = `translate(${x * 50}px, ${y * 50}px)`;
+        });
+    </script>
+</body>
+</html>
