@@ -1,0 +1,78 @@
+<!-- DAG Pipeline - SVG Image -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1e3c72"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1e3c72" text-anchor="middle">
+    DAG - Pipeline ETL (Airflow)
+  </text>
+  
+  <!-- Nodes -->
+  <!-- Start -->
+  <circle cx="100" cy="150" r="35" fill="#28a745" stroke="#1e3c72" stroke-width="2"/>
+  <text x="100" y="145" font-family="Arial" font-size="12" fill="white" text-anchor="middle">START</text>
+  <text x="100" y="195" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">sensor</text>
+  
+  <!-- Extract -->
+  <circle cx="250" cy="150" r="35" fill="#007bff" stroke="#1e3c72" stroke-width="2"/>
+  <text x="250" y="145" font-family="Arial" font-size="12" fill="white" text-anchor="middle">EXTRACT</text>
+  <text x="250" y="195" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">operator</text>
+  
+  <!-- Transform -->
+  <circle cx="400" cy="150" r="35" fill="#ffc107" stroke="#1e3c72" stroke-width="2"/>
+  <text x="400" y="145" font-family="Arial" font-size="12" fill="white" text-anchor="middle">TRANSFORM</text>
+  <text x="400" y="195" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">operator</text>
+  
+  <!-- Load -->
+  <circle cx="550" cy="150" r="35" fill="#17a2b8" stroke="#1e3c72" stroke-width="2"/>
+  <text x="550" y="145" font-family="Arial" font-size="12" fill="white" text-anchor="middle">LOAD</text>
+  <text x="550" y="195" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">operator</text>
+  
+  <!-- Validate -->
+  <circle cx="700" cy="150" r="35" fill="#6c757d" stroke="#1e3c72" stroke-width="2"/>
+  <text x="700" y="145" font-family="Arial" font-size="12" fill="white" text-anchor="middle">VALIDATE</text>
+  <text x="700" y="195" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">operator</text>
+  
+  <!-- End -->
+  <circle cx="400" cy="300" r="35" fill="#28a745" stroke="#1e3c72" stroke-width="2"/>
+  <text x="400" y="295" font-family="Arial" font-size="12" fill="white" text-anchor="middle">END</text>
+  <text x="400" y="345" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">sensor</text>
+  
+  <!-- Arrows -->
+  <line x1="135" y1="150" x2="215" y2="150" stroke="#1e3c72" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="285" y1="150" x2="365" y2="150" stroke="#1e3c72" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="435" y1="150" x2="515" y2="150" stroke="#1e3c72" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="585" y1="150" x2="665" y2="150" stroke="#1e3c72" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="700" y1="185" x2="700" y2="265" stroke="#1e3c72" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Labels -->
+  <text x="175" y="135" font-family="Arial" font-size="10" fill="#1e3c72" text-anchor="middle">1</text>
+  <text x="325" y="135" font-family="Arial" font-size="10" fill="#1e3c72" text-anchor="middle">2</text>
+  <text x="475" y="135" font-family="Arial" font-size="10" fill="#1e3c72" text-anchor="middle">3</text>
+  <text x="625" y="135" font-family="Arial" font-size="10" fill="#1e3c72" text-anchor="middle">4</text>
+  <text x="700" y="220" font-family="Arial" font-size="10" fill="#1e3c72" text-anchor="middle">5</text>
+  
+  <!-- Process Details -->
+  <rect x="50" y="340" width="150" height="40" fill="#e9ecef" stroke="#1e3c72" rx="5"/>
+  <text x="125" y="358" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">Read CSV files</text>
+  <text x="125" y="372" font-family="Arial" font-size="8" fill="#666" text-anchor="middle">ventas, clientes, productos</text>
+  
+  <rect x="225" y="340" width="150" height="40" fill="#e9ecef" stroke="#1e3c72" rx="5"/>
+  <text x="300" y="358" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">Clean & Join</text>
+  <text x="300" y="372" font-family="Arial" font-size="8" fill="#666" text-anchor="middle">Data cleaning</text>
+  
+  <rect x="400" y="340" width="150" height="40" fill="#e9ecef" stroke="#1e3c72" rx="5"/>
+  <text x="475" y="358" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">Merge Data</text>
+  <text x="475" y="372" font-family="Arial" font-size="8" fill="#666" text-anchor="middle">Star Schema</text>
+  
+  <rect x="575" y="340" width="175" height="40" fill="#e9ecef" stroke="#1e3c72" rx="5"/>
+  <text x="662" y="358" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">Save CSV</text>
+  <text x="662" y="372" font-family="Arial" font-size="8" fill="#666" text-anchor="middle">cleaned_dataset.csv</text>
+</svg>
